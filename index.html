@@ -368,6 +368,9 @@
       html, body {
         height: 100%;
       }
+      html {
+        transition: background-color 0.5s ease-out;
+      }
       body {
         display: grid;
         place-items: center;
@@ -383,6 +386,9 @@
       .icon {
         max-width: 100%;
         max-height: 100%;
+      }
+      .icon path {
+        transition: stroke 0.25s ease-out;
       }
       .wake-lock-enabled {
         background-color: #fff;
