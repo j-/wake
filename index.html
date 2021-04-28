@@ -10,10 +10,30 @@
     <div hidden id="icons">
       <!-- https://heroicons.com/ eye-off -->
       <svg xmlns="http://www.w3.org/2000/svg" id="wake-lock-disabled" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" role="presentation">
+        <style>
+          path {
+            stroke: #000;
+          }
+          @media (prefers-color-scheme: dark) {
+            path {
+              stroke: #fff;
+            }
+          }
+        </style>
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
       </svg>
       <!-- https://heroicons.com/ eye -->
       <svg xmlns="http://www.w3.org/2000/svg" id="wake-lock-enabled" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" role="presentation">
+        <style>
+          path {
+            stroke: #000;
+          }
+          @media (prefers-color-scheme: dark) {
+            path {
+              stroke: #fff;
+            }
+          }
+        </style>
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
       </svg>
@@ -291,52 +311,35 @@
         const toggleEl = document.querySelector('#toggle');
         const iconsEl = document.querySelector('#icons');
         const wakeLockEnabledIcon = document.querySelector('#wake-lock-enabled');
+        const wakeLockEnabledIconURL = getURL(wakeLockEnabledIcon);
         const wakeLockDisabledIcon = document.querySelector('#wake-lock-disabled');
+        const wakeLockDisabledIconURL = getURL(wakeLockDisabledIcon);
         const icon = document.createElement('link');
         icon.rel = 'icon';
+        icon.type = 'image/svg+xml';
         document.head.appendChild(icon);
-        const drawIcon = (svg, cb) => {
-          svg = svg.cloneNode(true);
-          svg.setAttribute('stroke', window.matchMedia('(prefers-color-scheme: dark)').matches ? '#fff' : '#000');
-          const canvas = document.createElement('canvas');
-          canvas.width = 16;
-          canvas.height = 16;
-          const ctx = canvas.getContext('2d');
+        function getURL (svg) {
           const blob = new Blob([svg.outerHTML], { type: 'image/svg+xml;charset=utf-8' });
           const url = URL.createObjectURL(blob);
-          const image = new Image();
-          image.onload = () => {
-            ctx.drawImage(image, 0, 0);
-            URL.revokeObjectURL(url);
-            cb(canvas);
-          };
-          image.src = url;
-        };
-        const showWakeLockEnabled = () => {
+          return url;
+        }
+        function showWakeLockEnabled () {
           toggleEl.title = 'Wake lock is enabled, click to disable';
           document.title = '[ENABLED] Wake lock';
           document.documentElement.classList.remove('wake-lock-disabled');
           document.documentElement.classList.add('wake-lock-enabled');
           if (toggleEl.firstElementChild) toggleEl.removeChild(toggleEl.firstElementChild);
           toggleEl.appendChild(wakeLockEnabledIcon);
-          drawIcon(wakeLockEnabledIcon, (canvas) => {
-            document.head.removeChild(icon);
-            icon.href = canvas.toDataURL();
-            document.head.appendChild(icon);
-          });
+          icon.href = wakeLockEnabledIconURL;
         };
-        const showWakeLockDisabled = () => {
+        function showWakeLockDisabled () {
           toggleEl.title = 'Wake lock is disabled, click to enable';
           document.title = 'Wake lock';
           document.documentElement.classList.remove('wake-lock-enabled');
           document.documentElement.classList.add('wake-lock-disabled');
           if (toggleEl.firstElementChild) toggleEl.removeChild(toggleEl.firstElementChild);
           toggleEl.appendChild(wakeLockDisabledIcon);
-          drawIcon(wakeLockDisabledIcon, (canvas) => {
-            document.head.removeChild(icon);
-            icon.href = canvas.toDataURL();
-            document.head.appendChild(icon);
-          });
+          icon.href = wakeLockDisabledIconURL;
         };
         toggleEl.addEventListener('click', () => {
           if (!wakeLockEnabled) {
@@ -384,20 +387,20 @@
       .wake-lock-enabled {
         background-color: #fff;
       }
-      .wake-lock-enabled #toggle {
-        color: #ccc;
+      .wake-lock-enabled #toggle path {
+        stroke: #ccc;
       }
-      .wake-lock-enabled #toggle:hover {
-        color: #aaa;
+      .wake-lock-enabled #toggle:hover path {
+        stroke: #aaa;
       }
       .wake-lock-disabled {
         background-color: #ddd;
       }
-      .wake-lock-disabled #toggle {
-        color: #555;
+      .wake-lock-disabled #toggle path {
+        stroke: #555;
       }
-      .wake-lock-disabled #toggle:hover {
-        color: #444;
+      .wake-lock-disabled #toggle:hover path {
+        stroke: #444;
       }
     </style>
   </body>
