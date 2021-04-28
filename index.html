@@ -402,6 +402,26 @@
       .wake-lock-disabled #toggle:hover path {
         stroke: #444;
       }
+      @media (prefers-color-scheme: dark) {
+        .wake-lock-enabled {
+          background-color: #333;
+        }
+        .wake-lock-enabled #toggle path {
+          stroke: #999;
+        }
+        .wake-lock-enabled #toggle:hover path {
+          stroke: #bbb;
+        }
+        .wake-lock-disabled {
+          background-color: #000;
+        }
+        .wake-lock-disabled #toggle path {
+          stroke: #222;
+        }
+        .wake-lock-disabled #toggle:hover path {
+          stroke: #444;
+        }
+      }
     </style>
   </body>
 </html>
